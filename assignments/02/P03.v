@@ -10,6 +10,9 @@ Require Export P02.
 
 Lemma double_plus : forall n, double n = n + n .
 Proof.  
-  exact FILL_IN_HERE.
+  intros n.
+  induction n as [| n' InH].
+  simpl. reflexivity.
+  simpl. rewrite -> InH. rewrite -> plus_n_Sm. reflexivity.
 Qed.
 

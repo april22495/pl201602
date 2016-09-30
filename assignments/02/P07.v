@@ -8,6 +8,9 @@ Require Export P06.
 Theorem app_nil_end : forall l : natlist, 
   l ++ [] = l.   
 Proof.
-  exact FILL_IN_HERE.
+  intros l.
+  induction l as [ | hd tl InH]. 
+  - simpl. reflexivity.
+  - simpl. rewrite -> InH. reflexivity.  
 Qed.  
 

@@ -7,6 +7,9 @@ Require Export P03.
 Theorem mult_plus_distr_r : forall n m p : nat,
   (n + m) * p = (n * p) + (m * p).
 Proof.  
-  exact FILL_IN_HERE.
+  intros n m p.
+  induction n as [| n' InH].
+  - simpl. reflexivity.
+  - simpl. rewrite -> InH. rewrite -> plus_assoc. reflexivity. 
 Qed.
 
