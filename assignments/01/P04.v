@@ -7,5 +7,8 @@ Require Export P03.
 Theorem zero_nbeq_plus_1 : forall n : nat,
   beq_nat 0 (n + 1) = false.
 Proof.
-  exact FILL_IN_HERE.
+  intros n.
+  destruct n as [|n'].
+  - reflexivity.
+  - reflexivity.
 Qed.

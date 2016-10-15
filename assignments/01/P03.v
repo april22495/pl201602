@@ -5,7 +5,11 @@ Theorem mult_S_1 : forall n m : nat,
   m = S n -> 
   m * (1 + n) = m * m.
 Proof.
-  exact FILL_IN_HERE.
+  intros n m.
+  intros H.
+  rewrite ->H.
+  simpl.
+  reflexivity.
 Qed.
 
 (*-- Check --*)
