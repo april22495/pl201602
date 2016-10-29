@@ -8,15 +8,18 @@ Require Export P01.
 
 (** Successor of a natural number: *)
 
-Definition c_succ (n : c_nat) : c_nat :=
-  FILL_IN_HERE.
+(*Compute c_zero nat (fun (n:nat)=>(S n)) 0.*)
 
+Definition c_succ (n : c_nat) : c_nat :=
+  fun (X : Type) (f : X -> X) (x : X) => (f (n X f x)).
+
+(*Compute c_succ.*)
 Example c_succ_1 : c_succ c_zero = c_one.
-Proof. exact FILL_IN_HERE. Qed.
+Proof. unfold c_succ. unfold c_zero. unfold c_one. reflexivity. Qed.
 
 Example c_succ_2 : c_succ c_one = c_two.
-Proof. exact FILL_IN_HERE. Qed.
+Proof. reflexivity. Qed.
 
 Example c_succ_3 : c_succ c_two = c_three.
-Proof. exact FILL_IN_HERE. Qed.
+Proof. reflexivity. Qed.
 

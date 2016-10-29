@@ -19,13 +19,22 @@ Require Export D.
 (** We can define currying as follows: *)
 
 Print prod_curry.
+(*prod_curry = 
+fun (X Y Z : Type) (f : X * Y -> Z) (x : X) (y : Y) => f (x, y)
+     : forall X Y Z : Type, (X * Y -> Z) -> X -> Y -> Z
+
+Arguments X, Y, Z are implicit and maximally inserted
+Argument scopes are [type_scope type_scope type_scope _ _ _]
+*)
 
 (** As an exercise, define its inverse, [prod_uncurry].  Then prove
     the theorems below to show that the two are inverses. *)
 
 Definition prod_uncurry {X Y Z : Type}
   (f : X -> Y -> Z) (p : X * Y) : Z :=
-  FILL_IN_HERE.
+  match p with 
+  |pair x y => (f x y)
+  end.
 
 (** (Thought exercise: before running these commands, can you
     calculate the types of [prod_curry] and [prod_uncurry]?) *)
@@ -35,18 +44,19 @@ Check @prod_uncurry.
 
 Example test_uncurry:
   prod_uncurry plus (3,7) = 10.
-Proof. exact FILL_IN_HERE. Qed.
+Proof. simpl. reflexivity. Qed.
 
 Theorem uncurry_curry : forall (X Y Z : Type) (f : X -> Y -> Z) x y,
   prod_curry (prod_uncurry f) x y = f x y.
 Proof.
-  exact FILL_IN_HERE.
-Qed.
+  intros X Y Z f x y.
+  reflexivity. Qed.
 
 Theorem curry_uncurry : forall (X Y Z : Type)
                                (f : (X * Y) -> Z) (p : X * Y),
   prod_uncurry (prod_curry f) p = f p.
 Proof.
-  exact FILL_IN_HERE.
+  intros X Y Z f p.
+  destruct p. simpl. reflexivity.
 Qed.
 
