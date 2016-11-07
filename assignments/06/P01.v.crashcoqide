@@ -1,0 +1,14 @@
+Require Export D.
+
+Theorem evenb_double_conv : forall n,
+  exists k, n = if evenb n then double k
+                else S (double k).
+Proof. 
+  intros. induction n as [|n'].
+  - simpl. exists 0. reflexivity.
+  - inversion IHn'. remember (evenb n') as e. destruct e. 
+  + assert(Hs: evenb(S n')=false). 
+  {induction n' as [| [| m]]. simpl. reflexivity. destruct x. inversion H. inversion H.
+  
+  }
+   

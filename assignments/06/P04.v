@@ -14,9 +14,28 @@ Require Export P03.
 
 Theorem excluded_middle_to_double_negation_elimination:
   excluded_middle -> double_negation_elimination.
-Proof. exact FILL_IN_HERE. Qed.
-
+Proof.
+unfold excluded_middle.
+unfold double_negation_elimination.
+intros.
+unfold not in H0. destruct (H P). apply H1. unfold not in H1. apply H0 in H1. inversion H1.       
+ Qed. 
+ 
+Theorem notnot: forall P, 
+ ~~ (P\/~P).
+Proof.
+  intros.
+  unfold not. intros. apply H. right. intros. apply H. left. auto.
+  Qed. 
 Theorem double_negation_elimination_to_excluded_middle:
   double_negation_elimination -> excluded_middle.
-Proof. exact FILL_IN_HERE. Qed.
+Proof. 
+unfold excluded_middle.
+unfold double_negation_elimination.
+intros.
+unfold not in H. 
+assert(~~(P\/~P)). { apply notnot. }
+apply H in H0. apply H0.     
+
+ Qed.
 

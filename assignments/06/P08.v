@@ -39,45 +39,59 @@ Require Export P07.
       Hint: choose your induction carefully! *)
 
 Inductive subseq {X: Type}: list X -> list X -> Prop :=
-(* FILL_IN_HERE *)
+| empty : forall xl, subseq [] xl
+| found : forall (hd:X) (tl1 tl2: list X), subseq tl1 tl2 -> subseq (hd::tl1) (hd::tl2)
+| pass hd tl1 tl2: subseq tl1 tl2->subseq tl1 (hd::tl2)
 .
 
 Example subseq_ex1: subseq [1;2;3] [1;2;3].
-Proof. exact FILL_IN_HERE. (* repeat constructor. *) Qed.
-
+Proof. apply found. apply found. apply found. apply empty.
+Qed. 
 Example subseq_ex2: subseq [1;2;3] [1;1;1;2;2;3].
-Proof. exact FILL_IN_HERE. (* repeat constructor. *) Qed.
-
+Proof. apply found. apply pass. apply pass. apply found. apply pass. apply found. apply empty.
+Qed. 
 Example subseq_ex3: subseq [1;2;3] [1;2;7;3].
-Proof. exact FILL_IN_HERE. (* repeat constructor. *) Qed.
+Proof. apply found. apply found. apply pass. apply found. apply empty. Qed.
 
 Example subseq_ex4: subseq [1;2;3] [5;6;1;9;9;2;7;3;8].
-Proof. exact FILL_IN_HERE. (* repeat constructor. *) Qed.
+Proof. repeat constructor. Qed.
 
 Example subseq_ex5: ~ subseq [1;2;3] [1;2].
 Proof.
-  exact FILL_IN_HERE.
-  (* intro H; repeat match goal with [H: subseq _ _ |- _] => inversion_clear H end. *)
+  intro H; repeat match goal with [H: subseq _ _ |- _] => inversion_clear H end. 
 Qed.
 
 Example subseq_ex6: ~ subseq [1;2;3] [1;3].
 Proof.
-  exact FILL_IN_HERE.
-  (* intro H; repeat match goal with [H: subseq _ _ |- _] => inversion_clear H end. *)
+intro H; repeat match goal with [H: subseq _ _ |- _] => inversion_clear H end.
 Qed.
 
 Example subseq_ex7: ~ subseq [1;2;3] [5;6;2;1;7;3;8].
 Proof.
-  exact FILL_IN_HERE.
-  (* intro H; repeat match goal with [H: subseq _ _ |- _] => inversion_clear H end. *)
+ intro H; repeat match goal with [H: subseq _ _ |- _] => inversion_clear H end.
 Qed.
 
 Lemma subseq_refl: forall X (l: list X), 
   subseq l l.
-Proof. exact FILL_IN_HERE. Qed.
+Proof. intros. induction l. 
+apply empty.
+apply found. apply IHl.  
+Qed.
 
+Lemma l_app_nil: forall X (l: list X), l++[]=l.
+Proof. intros. induction l. simpl. reflexivity. simpl. rewrite IHl. reflexivity.
+Qed.
+
+Lemma app_cons_cons_app: forall X (h:X) (t l : list X), (h::t)++l=h::(t++l).
+Proof. intros. reflexivity. 
+Qed.  
 Lemma subseq_app: forall X (l1 l2 l3: list X)
     (SUB: subseq l1 l2),
   subseq l1 (l2++l3).
-Proof. exact FILL_IN_HERE. Qed.
+Proof. 
+intros. induction SUB. 
+- apply empty.
+- rewrite app_cons_cons_app. apply found. apply IHSUB.
+- rewrite app_cons_cons_app.  apply pass. apply IHSUB. 
+Qed.
 

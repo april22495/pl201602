@@ -18,5 +18,13 @@ Inductive ev' : nat -> Prop :=
     the old one. *)
 
 Theorem ev'_ev : forall n, ev' n <-> ev n.
-Proof. exact FILL_IN_HERE. Qed.
-
+Proof.
+intros n. split.
+-  intros H. induction H.
+  + apply ev_0. 
+  + apply ev_SS. apply ev_0.
+  + apply ev_sum. apply IHev'1. apply IHev'2. 
+- intros. induction H. 
+  + apply ev'_0. 
+  + apply ev'_sum with (n := 2) (m := n). apply ev'_2. apply IHev. 
+Qed. 
