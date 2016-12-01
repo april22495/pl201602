@@ -61,30 +61,58 @@ Inductive sinstr : Type :=
     stack contains less than two elements.  In a sense, it is
     immaterial what we do, since our compiler will never emit such a
     malformed program. *)
+    
+Definition s_eval (st : state) (stack : list nat) (inst : sinstr) : list nat :=
+  match inst with
+    | SPush x => x :: stack
+    | SLoad v => st v :: stack
+    | SPlus   => match stack with
+                   | a :: b :: rest => b + a :: rest
+                   | _ => []
+                 end
+    | SMinus  => match stack with
+                   | a :: b :: rest => b - a :: rest
+                   | _ => []
+                 end
+    | SMult   => match stack with
+                   | a :: b :: rest => b * a :: rest
+                   | _ => []
+                 end
+end.
 
 Fixpoint s_execute (st : state) (stack : list nat)
                    (prog : list sinstr)
                  : list nat 
-:= FILL_IN_HERE.
+:= match prog with
+    | [] => stack
+    | inst :: insts =>
+      s_execute st (s_eval st stack inst) insts
+end.
   
 Example s_execute1 :
      s_execute empty_state []
        [SPush 5; SPush 3; SPush 1; SMinus]
    = [2; 5].
-Proof. exact FILL_IN_HERE. Qed.
+Proof. simpl. reflexivity. Qed.
 
 Example s_execute2 :
      s_execute (t_update empty_state X 3) [3;4]
        [SPush 4; SLoad X; SMult; SPlus]
    = [15; 4].
-Proof. exact FILL_IN_HERE. Qed. 
+Proof. simpl. reflexivity. Qed. 
 
 (** Next, write a function that compiles an [aexp] into a stack
     machine program. The effect of running the program should be the
     same as pushing the value of the expression on the stack. *)
 
 Fixpoint s_compile (e : aexp) : list sinstr 
-:= FILL_IN_HERE.
+:= match e with
+    | ANum n       => [SPush n]
+    | AId X        => [SLoad X]
+    | APlus a1 a2  => s_compile a1 ++ s_compile a2 ++ [SPlus]
+    | AMinus a1 a2 => s_compile a1 ++ s_compile a2 ++ [SMinus]
+    | AMult a1 a2  => s_compile a1 ++ s_compile a2 ++ [SMult]
+end.
 
 (** After you've defined [s_compile], prove the following to test
     that it works. *)
@@ -92,7 +120,7 @@ Fixpoint s_compile (e : aexp) : list sinstr
 Example s_compile1 :
     s_compile (AMinus (AId X) (AMult (ANum 2) (AId Y)))
   = [SLoad X; SPush 2; SLoad Y; SMult; SMinus].
-Proof. exact FILL_IN_HERE. Qed.
+Proof. simpl. reflexivity. Qed.
 
 (** **** Exercise: 4 stars, advanced (stack_compiler_correct)  *)
 (** Now we'll prove the correctness of the compiler implemented in the
@@ -108,5 +136,14 @@ Proof. exact FILL_IN_HERE. Qed.
 
 Theorem s_compile_correct : forall (st : state) (e : aexp),
   s_execute st [] (s_compile e) = [ aeval st e ].
-Proof. exact FILL_IN_HERE. Qed.
+Proof.
+  intros.
+  induction e.
+  - intros. reflexivity.
+  - intros. reflexivity.
+  - intros. simpl. rewrite IHe1. 
+  rewrite IHe2. 
+  reflexivity
+).
+Qed.
 

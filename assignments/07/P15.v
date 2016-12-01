@@ -1,6 +1,7 @@
 Require Export P14.
 
 
+(*Software Foundations - Equiv.v*)
 
 (** **** Exercise: 3 stars, optional (inequiv_exercise)  *)
 (** Prove that an infinite loop is not equivalent to [SKIP] *)

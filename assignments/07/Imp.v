@@ -605,6 +605,7 @@ Notation "e '\\' n"
 
 End aevalR_first_try.
 
+
 (** In fact, Coq provides a way to use this notation in the definition
     of [aevalR] itself.  This avoids situations where we're working on
     a proof involving statements in the form [e \\ n] but we have to
@@ -615,6 +616,7 @@ End aevalR_first_try.
     means. *)
 
 Reserved Notation "e '\\' n" (at level 50, left associativity).
+
 
 Inductive aevalR : aexp -> nat -> Prop :=
   | E_ANum : forall (n:nat),
@@ -1224,6 +1226,7 @@ Inductive ceval : com -> state -> state -> Prop :=
     program evaluates to some result state, rather than just letting
     Coq's computation mechanism do it for us. *)
 
+
 Example ceval_example1:
     (X ::= ANum 2;;
      IFB BLe (AId X) (ANum 1)
@@ -1255,7 +1258,7 @@ Proof.
    [X] (inclusive: [1 + 2 + ... + X]) in the variable [Y].
    Prove that this program executes as intended for [X] = [2]
    (the latter is trickier than you might expect). *)
-
+Check E_Seq.
 Definition pup_to_n : com 
   (* REPLACE THIS LINE WITH   := _your_definition_ . *) . Admitted.
 

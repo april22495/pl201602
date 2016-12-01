@@ -22,6 +22,12 @@ Theorem nth_error_after_last: forall (n : nat) (X : Type) (l : list X),
 Proof.
   intros n X l. generalize n.
   induction l.
+  simpl. reflexivity.
+  intros n0 H.
+  simpl. rewrite <- H. simpl. apply IHl. reflexivity.
+
+  intros n X l. generalize n.
+  induction l.
   - simpl. reflexivity.
   - intros. simpl in H. destruct n0. 
   simpl. inversion H.

@@ -9,12 +9,17 @@ Proof.
   intros st st' contra. unfold loop in contra.
   remember (WHILE BTrue DO SKIP END) as loopdef
            eqn:Heqloopdef.
-
   (** Proceed by induction on the assumed derivation showing that
       [loopdef] terminates.  Most of the cases are immediately
       contradictory (and so can be solved in one step with
       [inversion]). *)
-
-  exact FILL_IN_HERE.
+  induction loopdef;
+   try ( inversion Heqloopdef) .
+  - subst. apply contra. 
+  
+   
+  
+  
+   
 Qed.
 
